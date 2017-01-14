@@ -1,0 +1,15 @@
+#*/temp
+#*/Library/metadata
+Projects/*/Library
+Projects/*/Temp
+#Projects/*/ProjectSettings
+Projects/*/obj
+Projects/*/Builds
+Projects/Bundle
+Projects/Block-Breaker
+
+
+*.suo
+*.sln
+*.csproj
+*.userprefs
