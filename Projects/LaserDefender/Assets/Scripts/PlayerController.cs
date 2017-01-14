@@ -6,10 +6,17 @@ public class PlayerController : MonoBehaviour {
     public float speed = 15.0f;
     public float padding = 0.7f;
 
+    public GameObject projectilePrefab01;
+    public float projectileSpeed = 0f;
+    public float fireRate = 0.2f;
+
     float xmin;
     float xmax;
 
     public bool mouseControl = false;
+
+    Vector3 projectilePositionRight = new Vector3(1.8f, 1f, 0);
+    Vector3 projectilePositionLeft = new Vector3(-1.8f, 1f, 0);
 
     // Use this for initialization
     void Start () {
@@ -19,9 +26,9 @@ public class PlayerController : MonoBehaviour {
         xmin = leftmost.x + padding;
         xmax = rightmost.x - padding;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update() {
 
         //Mouse control
         if (mouseControl == true)
@@ -37,13 +44,25 @@ public class PlayerController : MonoBehaviour {
 
             // Debug.Log(this.rigidbody2D.velocity);
 
-        } else //Key Board Control
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            InvokeRepeating("Fire", 0.000001f, fireRate);
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            CancelInvoke("Fire");
+        }
+
+        else //Key Board Control
         {
             if (Input.GetKey(KeyCode.LeftArrow))
             {
                 // this.transform.position += new Vector3(-speed * Time.deltaTime, 0f, 0);  
                 this.transform.position += Vector3.left * speed * Time.deltaTime;
-            } else if (Input.GetKey(KeyCode.RightArrow))
+            }
+            else if (Input.GetKey(KeyCode.RightArrow))
             {
                 this.transform.position += Vector3.right * speed * Time.deltaTime;
             }
@@ -51,7 +70,28 @@ public class PlayerController : MonoBehaviour {
             //Restrict movement to gamespace
             float newX = Mathf.Clamp(transform.position.x, xmin, xmax);
             transform.position = new Vector3(newX, transform.position.y, transform.position.z);
+
+            if (mouseControl == false)
+            {
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    InvokeRepeating("Fire", 0.000001f, fireRate);
+                }
+                if (Input.GetKeyUp(KeyCode.Space))
+                {
+                    CancelInvoke("Fire");
+                }
+            } 
+    
         }
 
+    }
+
+    void Fire()
+    { 
+        GameObject projectile1 = Instantiate(projectilePrefab01, (transform.position + projectilePositionLeft), Quaternion.identity) as GameObject;
+        GameObject projectile2 = Instantiate(projectilePrefab01, (transform.position + projectilePositionRight), Quaternion.identity) as GameObject;
+        projectile1.rigidbody2D.velocity = new Vector3(0, projectileSpeed, 0);
+        projectile2.rigidbody2D.velocity = new Vector3(0, projectileSpeed, 0);
     }
 }
