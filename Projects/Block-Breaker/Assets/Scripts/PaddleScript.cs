@@ -2,20 +2,23 @@
 using System.Collections;
 
 public class PaddleScript : MonoBehaviour {
+
     public MusicPlayer music;
 
     // public GameObject Paddle;
     private float hits = 0.0f;
 	// Use this for initialization
 	void Start () {
+        music = GameObject.FindObjectOfType<MusicPlayer>();
 	
 	}
 
-    void OnCollisionEnter2D(Collision2D collision)
+    //Put in bricks script
+/**    void OnCollisionEnter2D(Collision2D collision)
     {
-        hits += 0.01f;
-        music.audio.pitch = hits;
-    }
+       hits += 0.01f;
+       music.audio.pitch = hits;
+    } **/
 
     // Update is called once per frame
     void Update () {

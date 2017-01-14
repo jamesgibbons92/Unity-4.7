@@ -3,12 +3,14 @@ using System.Collections;
 
 public class Ball : MonoBehaviour {
 
-    public PaddleScript paddle;
+    private PaddleScript paddle;
     private bool hasStarted = false; //Private for now, might want to use it elswhere?
     private Vector3 paddleToBallVector;
 	// Use this for initialization
 	void Start () {
+        paddle = GameObject.FindObjectOfType<PaddleScript>();
         paddleToBallVector = this.transform.position - paddle.transform.position;
+
 	}
 	
 	// Update is called once per frame
@@ -21,7 +23,7 @@ public class Ball : MonoBehaviour {
             {
                 //Launch the ball and set hasStarted to true
                 hasStarted = true;
-                this.rigidbody2D.velocity = new Vector2(2f, 2f);
+                this.rigidbody2D.velocity = new Vector2(2f, 8f);
             }
 
         }
