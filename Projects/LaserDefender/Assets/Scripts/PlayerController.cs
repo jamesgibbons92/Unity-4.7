@@ -1,10 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
+
 
 public class PlayerController : MonoBehaviour {
 
     public float speed = 15.0f;
     public float padding = 0.7f;
+    public float playerHealth = 1000f;
+
+    public Text healthRemainingText;
+
 
     public GameObject projectilePrefab01;
     public float projectileSpeed = 0f;
@@ -20,6 +26,10 @@ public class PlayerController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+
+        healthRemainingText.text = "Health: " + playerHealth.ToString();
+        //healthRemainingText.text = "Health: " + playerHealth.ToString();
+
         float distance = transform.position.z - Camera.main.transform.position.z;
         Vector3 leftmost = Camera.main.ViewportToWorldPoint(new Vector3(0,0, distance));
         Vector3 rightmost = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, distance));
@@ -43,17 +53,17 @@ public class PlayerController : MonoBehaviour {
             transform.eulerAngles = new Vector3(0.0f, (shipPos.x) * 5, 0.0f);
 
             // Debug.Log(this.rigidbody2D.velocity);
-
+            if (Input.GetMouseButtonDown(0))
+            {
+                InvokeRepeating("Fire", 0.000001f, fireRate);
+            }
+            if (Input.GetMouseButtonUp(0))
+            {
+                CancelInvoke("Fire");
+            }
         }
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            InvokeRepeating("Fire", 0.000001f, fireRate);
-        }
-        if (Input.GetMouseButtonUp(0))
-        {
-            CancelInvoke("Fire");
-        }
+
 
         else //Key Board Control
         {
@@ -93,5 +103,24 @@ public class PlayerController : MonoBehaviour {
         GameObject projectile2 = Instantiate(projectilePrefab01, (transform.position + projectilePositionRight), Quaternion.identity) as GameObject;
         projectile1.rigidbody2D.velocity = new Vector3(0, projectileSpeed, 0);
         projectile2.rigidbody2D.velocity = new Vector3(0, projectileSpeed, 0);
+    }
+
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        Projectile enemyMissile = collider.gameObject.GetComponent<Projectile>();
+        if (enemyMissile)
+        {
+          //  healthRemainingText = GetComponent<Text>();
+            playerHealth -= enemyMissile.getDamage();
+            enemyMissile.Hit();
+            healthRemainingText.text = "Health: " + playerHealth.ToString();
+            if (playerHealth <= 0)
+            {
+
+                Destroy(gameObject);
+            }
+            //Enemy enemyHit = collider.gameObject.GetComponent<Enemy>();
+            //     Destroy(enemyHit.gameObject);
+        }
     }
 }

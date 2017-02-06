@@ -2,7 +2,10 @@ fileFormatVersion: 2
 guid: 77b0fc91490265d45ae9b6058bb0050a
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - healthRemainingText: {fileID: 11497224, guid: 8a76b9a1af4a2aa4ebb70b70af97eeb5,
+      type: 2}
+  - projectilePrefab01: {fileID: 101350, guid: 5a8b33817f9370143bfa6d1a98e7704c, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
